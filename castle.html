@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <body bgcolor="5CBEC4">
+  <head>
+    <title>CASTLE</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+
+        function getVal(){
+          var name = document.getElementById("r-name").value;
+          $.ajax({
+                    url: "http://127.0.0.1:8081/listhotels",
+                    type: "GET",
+                    dataType: 'json',
+                  
+                    success: function (data) {
+                        var result = JSON.stringify(data); //json对象转成字符串
+                        obj = JSON.parse(result); 
+
+                        //筛选对象
+                        var menu_node1 = obj.filter(function (e) { return e.name == name });
+                    
+                        //遍历结果对象
+                        for (var i = 0; i < menu_node1.length; i++) {
+                        var $img=$("#img");
+                        $img.attr('src',menu_node1[i].image);
+                        var tem = $("#picture")
+                        tem.text(menu_node1[i].image)
+                        var tem = $("#name")
+                        tem.text(menu_node1[i].name)
+                        var tem = $("#location")
+                        tem.text(menu_node1[i].location)
+                        var tem = $("#star")
+                        if(menu_node1[i].michelinStars == 1)
+                        {tem.text(menu_node1[i].michelinStars+" 🌟")}
+                        else if (menu_node1[i].michelinStars == 2)
+                        {tem.text(menu_node1[i].michelinStars+" 🌟 🌟")}
+                        else if (menu_node1[i].michelinStars == 3)
+                        {tem.text(menu_node1[i].michelinStars+" 🌟 🌟 🌟")}
+                        else {tem.text(menu_node1[i].michelinStars)}
+                        var tem = $("#description")
+                        tem.text(menu_node1[i].description)
+
+                        }
+                    }
+                   });
+        }       
+    </script>
+  </head>
+  
+  <body>
+    <div id="header" style="background-color:#285666;">
+        <h1 style="margin-bottom:0;">MICHELIN</h1>
+    </div>
+
+    <div id="content" style="background-color:#EEEEEE;">
+        <div id="restaurant">
+            Please enter the name of the restaurant： <input id="r-name" type="text" placeholder="restaurant name"/>
+        </div>
+        <input id="search" type="button" onclick="getVal();" value="Search">
+    </div> 
+    <div class="show-restaurant">
+        <div class="restaurant-picture">
+            <img id="img" width="380" height="180" alt="" title="" ></img>
+            
+        </div>
+        <div class="restaurant-name">
+          <span id = "name" ></span>
+        </div>
+        <div class="restaurant-location">Location:  
+            <span id = "location" ></span>
+          </div>
+        <div class="restaurant-star">Stars:     
+            <span id = "star" ></span>
+          </div>
+        <hr/>
+        <div class="restaurant-description">
+            <span id = "description" ></span>
+          </div>
+        <br/>
+      </div>
+    
+    <div id="footer" style="background-color:#285666;clear:both;text-align:center;">© ZHAOLIYUAN</div>
+    
+  </body>
+</html>
